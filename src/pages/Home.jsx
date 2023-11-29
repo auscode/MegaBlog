@@ -23,7 +23,7 @@ function Home() {
                 Login to read posts
               </h1>
             </div>
-          </div>
+          </div>  
         </Container>
       </div>
     );
@@ -31,6 +31,7 @@ function Home() {
   return (
     <div className="w-full py-8">
       <Container>
+        <div className="px-2 font-bold mb-2">Recent blog posts</div>
         <div className="flex flex-wrap">
           {posts.map((post) => (
             <div key={post.$id} className="p-2 w-1/4">
