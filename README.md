@@ -9,4 +9,10 @@ Currently, two official plugins are available:
 
 
 
-npm i @reduxjs/toolkit react-redux react-router-dom appwrite @tinymce/tinymce-react html-react-parser react-hook-form
+npm i @reduxjs/toolkit 
+react-redux 
+react-router-dom 
+appwrite 
+@tinymce/tinymce-react 
+html-react-parser 
+react-hook-form
