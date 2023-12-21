@@ -7,7 +7,12 @@ function Container({ children, loading }) {
       {loading ? (
         // Loader component while loading
         <div className="flex justify-center items-center h-screen">
-          <ClipLoader color="#4A90E2" loading={loading} size={70} />
+          <ClipLoader
+            color="#4A90E2"
+            loading={loading}
+            size={70}
+            speedMultiplier={1.5}
+          />
         </div>
       ) : (
         // Main content when loading is complete
