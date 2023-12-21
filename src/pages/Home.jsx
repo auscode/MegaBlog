@@ -1,17 +1,34 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from "../components";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function Home() {
+  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
+    // Simulate an asynchronous operation (e.g., data fetching)
     appwriteService.getPosts().then((posts) => {
       if (posts) {
         setPosts(posts.documents.reverse());
       }
+      setLoading(false);
     });
   }, []);
+
+  if (loading) {
+    return (
+      // Loader component while loading
+      <div className="w-full py-8 text-center">
+        <Container loading={loading}>
+          <div className="flex justify-center items-center h-screen">
+            <ClipLoader color="#4A90E2" loading={loading} size={50} />
+          </div>
+        </Container>
+      </div>
+    );
+  }
 
   if (posts.length === 0) {
     return (
@@ -23,11 +40,12 @@ function Home() {
                 Login to read posts
               </h1>
             </div>
-          </div>  
+          </div>
         </Container>
       </div>
     );
   }
+
   return (
     <div className="w-full py-8">
       <Container>
