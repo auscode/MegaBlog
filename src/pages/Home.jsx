@@ -8,7 +8,6 @@ function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // Simulate an asynchronous operation (e.g., data fetching)
     appwriteService.getPosts().then((posts) => {
       if (posts) {
         setPosts(posts.documents.reverse());
@@ -19,11 +18,10 @@ function Home() {
 
   if (loading) {
     return (
-      // Loader component while loading
       <div className="w-full py-8 text-center">
         <Container loading={loading}>
           <div className="flex justify-center items-center h-screen">
-            <ClipLoader color="#4A90E2" loading={loading} size={50} />
+            <ClipLoader color="#4A90E2" loading={loading} size={70} />
           </div>
         </Container>
       </div>

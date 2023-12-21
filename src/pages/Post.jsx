@@ -50,9 +50,8 @@ export default function Post() {
     <div className="py-8">
       <Container loading={loading}>
         {loading ? (
-          // Loader component while loading
           <div className="flex justify-center items-center h-screen">
-            <ClipLoader color="#4A90E2" loading={loading} size={50} />
+            <ClipLoader color="#4A90E2" loading={loading} size={70} />
           </div>
         ) : (
           post && (

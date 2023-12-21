@@ -8,7 +8,6 @@ function AllPosts() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // Simulate an asynchronous operation (e.g., data fetching)
     appwriteService.getPosts([]).then((posts) => {
       if (posts) {
         setPosts(posts.documents);
@@ -21,12 +20,10 @@ function AllPosts() {
     <div className="w-full py-8">
       <Container loading={loading}>
         {loading ? (
-          // Loader component while loading
           <div className="flex justify-center items-center h-screen">
-            <ClipLoader color="#4A90E2" loading={loading} size={50} />
+            <ClipLoader color="#4A90E2" loading={loading} size={70} />
           </div>
         ) : (
-          // Actual content when loading is complete
           <div className="flex flex-wrap">
             {posts.map((post) => (
               <div key={post.$id} className="p-2 w-1/4">
