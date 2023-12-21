@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import appwriteService from "../appwrite/config";
 import { Button, Container } from "../components";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
-import ClipLoader from "react-spinners/ClipLoader";
 
 export default function Post() {
-  const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -17,73 +16,63 @@ export default function Post() {
   const isAuthor = post && userData ? post.userId === userData.$id : false;
 
   useEffect(() => {
-    setLoading(true);
-
-    if (slug) {
-      appwriteService
-        .getPost(slug)
-        .then((post) => {
-          if (post) setPost(post);
+    const fetchPost = async () => {
+      setIsLoading(true);
+      if (slug) {
+        await appwriteService.getPost(slug).then((retrievedPost) => {
+          if (retrievedPost) setPost(retrievedPost);
           else navigate("/");
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-      navigate("/");
-    }
+        });
+      } else navigate("/");
+
+      setIsLoading(false);
+    };
+
+    fetchPost();
   }, [slug, navigate]);
 
   const deletePost = () => {
-    setLoading(true);
-    appwriteService
-      .deletePost(post.$id)
-      .then((status) => {
-        if (status) {
-          appwriteService.deleteFile(post.featuredImage);
-          navigate("/");
-        }
-      })
-      .finally(() => setLoading(false));
+    setIsLoading(true);
+    appwriteService.deletePost(post.$id).then((status) => {
+      if (status) {
+        appwriteService.deleteFile(post.featuredImage);
+        navigate("/");
+      }
+    });
   };
 
   return (
-    <div className="py-8">
-      <Container loading={loading}>
-        {loading ? (
-          <div className="flex justify-center items-center h-screen">
-            <ClipLoader color="#4A90E2" loading={loading} size={70} />
-          </div>
-        ) : (
-          post && (
-            <div>
-              <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
-                <img
-                  src={appwriteService.getFilePreview(post.featuredImage)}
-                  alt={post.title}
-                  className="rounded-xl"
-                />
+    <Container loading={isLoading}>
+      {post && (
+        <div className="py-8">
+          <Container>
+            <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
+              <img
+                src={appwriteService.getFilePreview(post.featuredImage)}
+                alt={post.title}
+                className="rounded-xl"
+              />
 
-                {isAuthor && (
-                  <div className="absolute right-6 top-6">
-                    <Link to={`/edit-post/${post.$id}`}>
-                      <Button bgColor="bg-green-500" className="mr-3">
-                        Edit
-                      </Button>
-                    </Link>
-                    <Button bgColor="bg-red-500" onClick={deletePost}>
-                      Delete
+              {isAuthor && (
+                <div className="absolute right-6 top-6">
+                  <Link to={`/edit-post/${post.$id}`}>
+                    <Button bgColor="bg-green-500" className="mr-3">
+                      Edit
                     </Button>
-                  </div>
-                )}
-              </div>
-              <div className="w-full mb-6">
-                <h1 className="text-2xl font-bold">{post.title}</h1>
-              </div>
-              <div className="browser-css">{parse(post.content)}</div>
+                  </Link>
+                  <Button bgColor="bg-red-500" onClick={deletePost}>
+                    Delete
+                  </Button>
+                </div>
+              )}
             </div>
-          )
-        )}
-      </Container>
-    </div>
+            <div className="w-full mb-6">
+              <h1 className="text-2xl font-bold">{post.title}</h1>
+            </div>
+            <div className="browser-css">{parse(post.content)}</div>
+          </Container>
+        </div>
+      )}
+    </Container>
   );
 }

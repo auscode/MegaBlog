@@ -1,47 +1,41 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, PostForm } from "../components";
 import appwriteService from "../appwrite/config";
 import { useNavigate, useParams } from "react-router-dom";
-import ClipLoader from "react-spinners/ClipLoader";
 
 function EditPost() {
-  const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { slug } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
+    const fetchData = async () => {
+      try {
+        if (slug) {
+          const post = await appwriteService.getPost(slug);
+          setPost(post);
+        } else {
+          navigate("/");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    if (slug) {
-      appwriteService
-        .getPost(slug)
-        .then((post) => {
-          if (post) {
-            setPost(post);
-          } else {
-            navigate("/");
-          }
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-      navigate("/");
-    }
+    fetchData();
   }, [slug, navigate]);
 
-  return loading ? (
-    <div className="flex justify-center items-center h-screen">
-      <ClipLoader color="#4A90E2" loading={loading} size={70} />
-    </div>
-  ) : (
-    post && (
+  return (
+    <Container loading={isLoading}>
       <div className="py-8">
-        <Container>
-          <PostForm post={post} />
-        </Container>
+        {post && (
+          <Container>
+            <PostForm post={post} />
+          </Container>
+        )}
       </div>
-    )
+    </Container>
   );
 }
 

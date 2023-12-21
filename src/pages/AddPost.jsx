@@ -1,32 +1,26 @@
-import { useState, useEffect } from "react";
 import { Container, PostForm } from "../components";
-import ClipLoader from "react-spinners/ClipLoader";
+import { useState, useEffect } from "react";
 
 function AddPost() {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const asyncOperation = async () => {
       setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+        setIsLoading(false);
+      }, 1000); 
     };
 
-    fetchData();
-  }, []);
+    asyncOperation();
+  }, []); 
 
   return (
-    <div className="py-8">
-      <Container loading={loading}>
-        {loading ? (
-          <div className="flex justify-center items-center h-screen">
-            <ClipLoader color="#4A90E2" loading={loading} size={50} />
-          </div>
-        ) : (
-          <PostForm />
-        )}
-      </Container>
-    </div>
+    <Container loading={isLoading}>
+      <div className="py-8">
+        {/* Your actual content goes here */}
+        <PostForm />
+      </div>
+    </Container>
   );
 }
 

@@ -1,37 +1,40 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import appwriteService from "../appwrite/config";
 import { Container, PostCard } from "../components";
-import ClipLoader from "react-spinners/ClipLoader";
 
 function Home() {
-  const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
-    appwriteService.getPosts().then((posts) => {
-      if (posts) {
-        setPosts(posts.documents.reverse());
+    appwriteService.getPosts().then((fetchedPosts) => {
+      if (fetchedPosts) {
+        setPosts(fetchedPosts.documents.reverse());
+        setIsLoading(false); 
       }
-      setLoading(false);
     });
   }, []);
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="w-full py-8 text-center">
-        <Container loading={loading}>
-          <div className="flex justify-center items-center h-screen">
-            <ClipLoader color="#4A90E2" loading={loading} size={70} />
+      <Container loading={isLoading}>
+        <div className="w-full py-8 mt-4 text-center">
+          <div className="flex flex-wrap">
+            <div className="p-2 w-full">
+              <h1 className="text-2xl font-bold hover:text-gray-500">
+                Loading posts...
+              </h1>
+            </div>
           </div>
-        </Container>
-      </div>
+        </div>
+      </Container>
     );
   }
 
   if (posts.length === 0) {
     return (
-      <div className="w-full py-8 mt-4 text-center">
-        <Container>
+      <Container loading={false}>
+        <div className="w-full py-8 mt-4 text-center">
           <div className="flex flex-wrap">
             <div className="p-2 w-full">
               <h1 className="text-2xl font-bold hover:text-gray-500">
@@ -39,14 +42,14 @@ function Home() {
               </h1>
             </div>
           </div>
-        </Container>
-      </div>
+        </div>
+      </Container>
     );
   }
 
   return (
-    <div className="w-full py-8">
-      <Container>
+    <Container loading={false}>
+      <div className="w-full py-8">
         <div className="px-2 font-bold mb-2">Recent blog posts</div>
         <div className="flex flex-wrap">
           {posts.map((post) => (
@@ -55,8 +58,8 @@ function Home() {
             </div>
           ))}
         </div>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
 }
 
