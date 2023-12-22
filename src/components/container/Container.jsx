@@ -1,11 +1,9 @@
-import React, { useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
 function Container({ children, loading }) {
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
       {loading ? (
-        // Loader component while loading
         <div className="flex justify-center items-center h-screen">
           <ClipLoader
             color="#4A90E2"
@@ -15,7 +13,6 @@ function Container({ children, loading }) {
           />
         </div>
       ) : (
-        // Main content when loading is complete
         <>{children}</>
       )}
     </div>
