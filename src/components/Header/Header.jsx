@@ -102,7 +102,7 @@ function Header() {
       </Container>
       {/* Navigation Links for Mobile */}
       <div
-        className={`lg:hidden md:hidden flex flex-row mt-2 bg-[#191919] ${
+        className={`lg:hidden md:hidden flex flex-row mt-2 bg-[#191919] justify-center ${
           isMenuOpen ? "block" : "hidden"
         }`}
         onClick={closeMenu}
