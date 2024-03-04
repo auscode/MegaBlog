@@ -1,4 +1,3 @@
-import React from "react";
 
 function Logo({ src, width = "100px" }) {
   return (
