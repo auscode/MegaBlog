@@ -11,6 +11,9 @@
 
 ## Screenshots
 
+### Hero Section
+![Hero](demoImages/HeroSection.jpeg)
+
 ### Home
 ![Home](demoImages/Home.png)
 
